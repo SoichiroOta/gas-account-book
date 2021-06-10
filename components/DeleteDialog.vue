@@ -20,19 +20,22 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   data () {
     return {
       /** ダイアログの表示状態 */
       show: false,
-      /** ローディング状態 */
-      loading: false,
       /** 受け取ったデータ */
       item: {}
     }
   },
+
+  computed: mapState({
+    /** ローディング状態 */
+    loading: state => state.loading.delete
+  }),
 
   methods: {
     ...mapActions([
@@ -53,8 +56,8 @@ export default {
       this.show = false
     },
     /** 削除がクリックされたとき */
-    onClickDelete () {
-      this.deleteAbData({ item: this.item })
+    async onClickDelete () {
+      await this.deleteAbData({ item: this.item })
       this.show = false
     }
   }
